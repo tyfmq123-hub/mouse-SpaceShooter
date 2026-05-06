@@ -10,15 +10,15 @@ public class PlayerBullet : MonoBehaviour
 
         Vector3 vp = Camera.main.WorldToViewportPoint(transform.position);
         if (vp.y > 1f)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
+            collision.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

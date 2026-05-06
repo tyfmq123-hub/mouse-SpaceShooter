@@ -1,0 +1,50 @@
+{
+  "waves": [
+    {
+      "enemies": [
+        { "delay": 1.5, "enemyType": 0, "point": 2 },
+        { "delay": 1.0, "enemyType": 0, "point": 4 },
+        { "delay": 1.0, "enemyType": 0, "point": 1 }
+      ]
+    },
+    {
+      "enemies": [
+        { "delay": 1.0, "enemyType": 0, "point": 0 },
+        { "delay": 0.8, "enemyType": 1, "point": 2 },
+        { "delay": 0.8, "enemyType": 0, "point": 5 },
+        { "delay": 0.8, "enemyType": 1, "point": 3 }
+      ]
+    },
+    {
+      "enemies": [
+        { "delay": 0.8, "enemyType": 1, "point": 2 },
+        { "delay": 0.6, "enemyType": 2, "point": 6 },
+        { "delay": 0.6, "enemyType": 1, "point": 0 },
+        { "delay": 0.6, "enemyType": 2, "point": 4 }
+      ]
+    },
+    {
+      "enemies": [
+        { "delay": 0.6, "enemyType": 2, "point": 2 },
+        { "delay": 0.4, "enemyType": 2, "point": 5 },
+        { "delay": 0.4, "enemyType": 1, "point": 7 },
+        { "delay": 0.4, "enemyType": 2, "point": 4 },
+        { "delay": 0.4, "enemyType": 2, "point": 6 },
+        { "delay": 0.4, "enemyType": 1, "point": 1 }
+      ]
+    },
+    {
+      "enemies": [
+        { "delay": 0.5, "enemyType": 2, "point": 0 },
+        { "delay": 0.3, "enemyType": 2, "point": 4 },
+        { "delay": 0.3, "enemyType": 1, "point": 5 },
+        { "delay": 0.3, "enemyType": 2, "point": 2 }
+      ]
+    },
+    {
+      "enemies": [
+        { "delay": 2.0, "enemyType": 3, "point": 2 }
+      ]
+    }
+  ]
+}
