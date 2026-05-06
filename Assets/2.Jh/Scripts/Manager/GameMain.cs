@@ -2,27 +2,35 @@ using UnityEngine;
 
 public class GameMain : MonoBehaviour
 {
-    
-    
     public Transform playerTransform;
     public Transform responTransform;
+    public Player player;
+    public SpawnManager spawnManager;
+
     void Awake()
     {
         Application.targetFrameRate = 60;
     }
 
-    
-    
-    
     public void ResetGame()
     {
         Time.timeScale = 1f;
 
-        // 플레이어 초기화
-        
-        playerTransform.position = responTransform.position;
+        GameManager.Instance.score = 0;
+        GameManager.Instance.StartGame();
 
-        // UI 초기화
+        player.ResetPlayer();
+
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            enemy.SetActive(false);
+
+        BulletStraightToPlayer[] bullets = Object.FindObjectsByType<BulletStraightToPlayer>(FindObjectsSortMode.None);
+        foreach (BulletStraightToPlayer bullet in bullets)
+            bullet.gameObject.SetActive(false);
+
+        spawnManager.ResetStage();
+
         UIManager.Instance.ResetUI();
+        UIManager.Instance.UpdateScore(0);
     }
 }

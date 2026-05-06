@@ -32,7 +32,7 @@ public class EnemyHealth : MonoBehaviour
         if (hp <= 0)
         {
             if (GameManager.Instance != null)
-                GameManager.Instance.score += score;
+                GameManager.Instance.AddScore(score);
 
             if (Random.value < 0.3f)
                 ItemManager.instance.SpawnRandom(transform.position);

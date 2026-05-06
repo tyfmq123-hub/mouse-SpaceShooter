@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour
@@ -17,8 +18,12 @@ public class Player : MonoBehaviour
     string currentAnim;
     float nextFireTime;
     [SerializeField, Range(0, 2)] int powerLevel = 0;
-    [SerializeField] int boomCount = 0;
+    public int boomCount = 0;
     public int lives = 3;
+    bool isInvincible = false;
+    Vector3 startPos;
+
+    public static event System.Action OnPlayerDead;
 
     List<Follower> activeFollowers = new List<Follower>();
 
@@ -29,9 +34,17 @@ public class Player : MonoBehaviour
         new Vector3(1.5f, 0, 0),
     };
 
+    Vector3 minBound, maxBound;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
+        startPos = transform.position;
+        nextFireTime = fireRate;
+
+        Camera cam = Camera.main;
+        minBound = cam.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        maxBound = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
     }
 
     void Update()
@@ -51,6 +64,12 @@ public class Player : MonoBehaviour
         Vector3 dir = new Vector3(h, v, 0).normalized;
         transform.position += dir * speed * Time.deltaTime;
 
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, minBound.x, maxBound.x),
+            Mathf.Clamp(transform.position.y, minBound.y, maxBound.y),
+            0
+        );
+
         if (h > 0)
             PlayAnim("Right");
         else if (h < 0)
@@ -61,7 +80,7 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (!Input.GetMouseButton(0) || Time.time < nextFireTime) return;
+        if (!Input.GetMouseButton(0) || Time.time < nextFireTime || isInvincible) return;
 
         nextFireTime = Time.time + fireRate;
 
@@ -85,6 +104,15 @@ public class Player : MonoBehaviour
             activeFollowers[i].TryFire();
     }
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy") && !isInvincible)
+        {
+            collision.gameObject.SetActive(false);
+            TakeDamage(1);
+        }
+    }
+
     void UseBoom()
     {
         if (boomCount <= 0) return;
@@ -92,7 +120,7 @@ public class Player : MonoBehaviour
 
         if (BoomEffectPrefab != null)
         {
-            GameObject effect = Instantiate(BoomEffectPrefab, transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(BoomEffectPrefab, Vector3.zero, Quaternion.identity);
             Destroy(effect, 3f);
         }
 
@@ -127,9 +155,54 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isInvincible) return;
+
         lives -= damage;
+
         if (lives <= 0)
+        {
+            OnPlayerDead?.Invoke();
             gameObject.SetActive(false);
+            return;
+        }
+
+        StartCoroutine(RespawnRoutine());
+    }
+
+    IEnumerator RespawnRoutine()
+    {
+        isInvincible = true;
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(1.5f);
+
+        transform.position = startPos;
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+
+        yield return new WaitForSeconds(0.3f);
+        isInvincible = false;
+    }
+
+    public void ResetPlayer()
+    {
+        lives = 3;
+        boomCount = 0;
+        powerLevel = 0;
+        isInvincible = false;
+        currentAnim = "";
+
+        foreach (Follower f in activeFollowers)
+            if (f != null) Destroy(f.gameObject);
+        activeFollowers.Clear();
+
+        transform.position = startPos;
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+        gameObject.SetActive(true);
+
+        StopAllCoroutines();
     }
 
     public void GetBoom()

@@ -21,6 +21,12 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(StartStage());
     }
 
+    public void ResetStage()
+    {
+        StopAllCoroutines();
+        StartCoroutine(StartStage());
+    }
+
     IEnumerator StartStage()
     {
         foreach (var wave in stageData.waves)

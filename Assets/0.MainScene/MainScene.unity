@@ -354,6 +354,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1976506860}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &181308966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1962282377776208684, guid: 2750d596984abb546be40cbc542f7de8, type: 3}
+  m_PrefabInstance: {fileID: 203273788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &181308970 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6540020898368472471, guid: 2750d596984abb546be40cbc542f7de8, type: 3}
+  m_PrefabInstance: {fileID: 203273788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181308966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d948b59a72e6bee4d969d4ce3a2f68e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
 --- !u!1001 &203273788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2623,8 +2639,8 @@ MonoBehaviour:
   - {fileID: 1457725745}
   gameOverSet: {fileID: 1583088884}
   gameMain: {fileID: 1976506859}
-  UI: {fileID: 344721550}
-  player: {fileID: 0}
+  UI: {fileID: 181308966}
+  player: {fileID: 181308970}
 --- !u!4 &1619665726
 Transform:
   m_ObjectHideFlags: 0
@@ -3506,6 +3522,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameMain
   playerTransform: {fileID: 0}
   responTransform: {fileID: 163767880}
+  player: {fileID: 181308970}
+  spawnManager: {fileID: 1488864393}
 --- !u!4 &1976506860
 Transform:
   m_ObjectHideFlags: 0

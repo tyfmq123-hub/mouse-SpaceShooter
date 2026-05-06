@@ -27,6 +27,7 @@ public class Item : MonoBehaviour
         switch (itemType)
         {
             case ItemType.Coin:
+                GameManager.Instance.AddScore(300);
                 break;
             case ItemType.PowerUp:
                 player.PowerUp();
