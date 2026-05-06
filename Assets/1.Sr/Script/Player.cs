@@ -10,12 +10,15 @@ public class Player : MonoBehaviour
     public float fireRate = 0.2f;
     public float spreadOffset = 0.03f;
 
+    public GameObject BoomEffectPrefab;
     public GameObject followerPrefab;
 
     Animator anim;
     string currentAnim;
     float nextFireTime;
     [SerializeField, Range(0, 2)] int powerLevel = 0;
+    [SerializeField] int boomCount = 0;
+    public int lives = 3;
 
     List<Follower> activeFollowers = new List<Follower>();
 
@@ -36,8 +39,8 @@ public class Player : MonoBehaviour
         Move();
         Fire();
 
-        if (Input.GetKeyDown(KeyCode.T))
-            PowerUp();
+        if (Input.GetKeyDown(KeyCode.B))
+            UseBoom();
     }
 
     void Move()
@@ -82,6 +85,30 @@ public class Player : MonoBehaviour
             activeFollowers[i].TryFire();
     }
 
+    void UseBoom()
+    {
+        if (boomCount <= 0) return;
+        boomCount--;
+
+        if (BoomEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(BoomEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 3f);
+        }
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            EnemyHealth health = enemy.GetComponent<EnemyHealth>();
+            if (health != null)
+                health.TakeDamage(100);
+        }
+
+        BulletStraightToPlayer[] bullets = FindObjectsByType<BulletStraightToPlayer>(FindObjectsSortMode.None);
+        foreach (BulletStraightToPlayer bullet in bullets)
+            bullet.gameObject.SetActive(false);
+    }
+
     public void PowerUp()
     {
         powerLevel = Mathf.Min(powerLevel + 1, 2);
@@ -96,6 +123,18 @@ public class Player : MonoBehaviour
             follower.Init(followTarget, followerOffsets[0]);
             activeFollowers.Add(follower);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        lives -= damage;
+        if (lives <= 0)
+            gameObject.SetActive(false);
+    }
+
+    public void GetBoom()
+    {
+        boomCount++;
     }
 
     void PlayAnim(string animName)

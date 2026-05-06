@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     public float speed = 10f;
+    public int damage = 1;
 
     void Update()
     {
@@ -15,9 +16,11 @@ public class PlayerBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.CompareTag("Enemy"))
         {
-            collision.gameObject.SetActive(false);
+            EnemyHealth health = collision.GetComponent<EnemyHealth>();
+            if (health != null)
+                health.TakeDamage(damage);
             gameObject.SetActive(false);
         }
     }

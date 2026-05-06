@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBullet
   speed: 10
+  damage: 10
 --- !u!1 &9143439850389472705
 GameObject:
   m_ObjectHideFlags: 0

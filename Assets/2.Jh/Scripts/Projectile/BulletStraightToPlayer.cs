@@ -15,6 +15,15 @@ public class BulletStraightToPlayer : MonoBehaviour
     }
 
     
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collision.GetComponent<Player>()?.TakeDamage(1);
+            gameObject.SetActive(false);
+        }
+    }
+
     void Update()
     {
         Debug.Log(moveDir);

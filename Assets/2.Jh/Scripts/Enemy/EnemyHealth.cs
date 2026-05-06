@@ -27,16 +27,16 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         hp -= damage;
-        Debug.Log("피격됨"); // ⭐ 추가
-
-        hp -= damage;
-
         anim.SetTrigger("Hit");
 
         if (hp <= 0)
         {
-            
-            GameManager.Instance.score += score;
+            if (GameManager.Instance != null)
+                GameManager.Instance.score += score;
+
+            if (Random.value < 0.3f)
+                ItemManager.instance.SpawnRandom(transform.position);
+
             OnDead?.Invoke();
             gameObject.SetActive(false);
         }
