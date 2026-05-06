@@ -15,11 +15,11 @@ public class Projectile : MonoBehaviour
             other.GetComponent<EnemyHealth>()?.TakeDamage(damage);
             gameObject.SetActive(false);
         }
-        /*else if (owner == OwnerType.Enemy && other.CompareTag("Player"))
+        else if (owner == OwnerType.Enemy && other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+            other.GetComponent<Player>()?.TakeDamage(damage);
             gameObject.SetActive(false);
-        }*/
+        }
     }
 }
 
